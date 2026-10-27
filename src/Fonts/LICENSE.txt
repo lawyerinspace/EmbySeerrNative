@@ -1,0 +1,3 @@
+badge-font.otf is a subset (A–Z, 0–9, space) of Inter Bold by Rasmus Andersson,
+https://rsms.me/inter/ — licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
+It is used only to draw the REQUESTED / PARTIAL poster badges.

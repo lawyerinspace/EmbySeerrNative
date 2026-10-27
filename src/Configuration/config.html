@@ -1,0 +1,370 @@
+<div id="seerrDiscoverConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-controller="__plugin/SeerrDiscoverConfigJs">
+  <div data-role="content">
+    <div class="content-primary">
+      <style>
+        #seerrDiscoverConfigPage { --sd-line: rgba(128,128,128,.28); --sd-soft: rgba(128,128,128,.10); --sd-accent: #52b54b; --sd-warn: #e0a030; --sd-err: #dc4b4b; }
+        #seerrDiscoverConfigPage .sd-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1em; margin-bottom: .6em; }
+        #seerrDiscoverConfigPage .sd-head h2 { margin: 0; }
+        #seerrDiscoverConfigPage .sd-lead { opacity: .8; line-height: 1.5; margin: 0 0 1.2em; max-width: 60em; }
+        #seerrDiscoverConfigPage .sd-tabs { display: flex; flex-wrap: wrap; gap: .3em; border-bottom: 1px solid var(--sd-line); margin-bottom: 1.4em; }
+        #seerrDiscoverConfigPage .sd-tab { background: none; border: 0; border-bottom: 3px solid transparent; color: inherit; font: inherit; padding: .7em 1em; cursor: pointer; opacity: .75; }
+        #seerrDiscoverConfigPage .sd-tab:hover { opacity: 1; }
+        #seerrDiscoverConfigPage .sd-tab[aria-selected="true"] { opacity: 1; border-bottom-color: var(--sd-accent); font-weight: 600; }
+        #seerrDiscoverConfigPage .sd-panel { display: none; max-width: 62em; }
+        #seerrDiscoverConfigPage .sd-panel.sd-active { display: block; }
+        #seerrDiscoverConfigPage h3 { margin: 1.8em 0 .5em; font-size: 1.15em; }
+        #seerrDiscoverConfigPage h3:first-child { margin-top: .2em; }
+        #seerrDiscoverConfigPage .sd-help { opacity: .75; font-size: .92em; line-height: 1.5; margin: .35em 0 1em; }
+        #seerrDiscoverConfigPage .sd-field { margin-bottom: 1.2em; }
+        #seerrDiscoverConfigPage .sd-field > label, #seerrDiscoverConfigPage .sd-label { display: block; font-weight: 600; margin-bottom: .35em; }
+        #seerrDiscoverConfigPage input[type=text], #seerrDiscoverConfigPage input[type=password], #seerrDiscoverConfigPage input[type=number],
+        #seerrDiscoverConfigPage input[type=url], #seerrDiscoverConfigPage select, #seerrDiscoverConfigPage textarea {
+          width: 100%; box-sizing: border-box; padding: .6em .7em; border-radius: 6px; border: 1px solid var(--sd-line);
+          background: rgba(0,0,0,.18); color: inherit; font: inherit;
+        }
+        #seerrDiscoverConfigPage select option { color: #000; }
+        #seerrDiscoverConfigPage textarea { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .9em; }
+        #seerrDiscoverConfigPage .sd-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(14em, 1fr)); gap: 0 1.2em; }
+        #seerrDiscoverConfigPage .sd-check { display: flex; gap: .6em; align-items: flex-start; margin: .7em 0; cursor: pointer; line-height: 1.4; }
+        #seerrDiscoverConfigPage .sd-check input { margin-top: .2em; flex: none; width: 1.1em; height: 1.1em; accent-color: var(--sd-accent); }
+        #seerrDiscoverConfigPage .sd-indent { margin-left: 1.8em; }
+        #seerrDiscoverConfigPage .sd-btn { display: inline-flex; align-items: center; gap: .4em; padding: .6em 1.1em; border-radius: 6px; border: 1px solid var(--sd-line);
+          background: var(--sd-soft); color: inherit; font: inherit; cursor: pointer; text-decoration: none; }
+        #seerrDiscoverConfigPage .sd-btn:hover { background: rgba(128,128,128,.2); }
+        #seerrDiscoverConfigPage .sd-btn.sd-primary { background: var(--sd-accent); border-color: var(--sd-accent); color: #fff; font-weight: 600; }
+        #seerrDiscoverConfigPage .sd-btn.sd-small { padding: .3em .65em; font-size: .9em; }
+        #seerrDiscoverConfigPage .sd-btn.sd-danger:hover { background: rgba(220,75,75,.25); }
+        #seerrDiscoverConfigPage .sd-btn:disabled { opacity: .45; cursor: default; }
+        #seerrDiscoverConfigPage .sd-buttons { display: flex; flex-wrap: wrap; gap: .6em; margin: 1.2em 0; align-items: center; }
+        #seerrDiscoverConfigPage .sd-status { padding: .8em 1em; border-radius: 6px; margin: 1em 0; display: none; line-height: 1.5; white-space: pre-line; }
+        #seerrDiscoverConfigPage .sd-status.ok { display: block; background: rgba(82,181,75,.15); border: 1px solid rgba(82,181,75,.5); }
+        #seerrDiscoverConfigPage .sd-status.err { display: block; background: rgba(220,75,75,.13); border: 1px solid rgba(220,75,75,.5); }
+        #seerrDiscoverConfigPage .sd-status.info { display: block; background: var(--sd-soft); border: 1px solid var(--sd-line); }
+        #seerrDiscoverConfigPage .sd-savebar { display: flex; gap: .8em; align-items: center; flex-wrap: wrap;
+          padding: 1em 0; margin-top: 2em; border-top: 1px solid var(--sd-line); }
+        #seerrDiscoverConfigPage .sd-headbtns { display: flex; gap: .6em; flex-wrap: wrap; align-items: center; }
+        #seerrDiscoverConfigPage .sd-card { border: 1px solid var(--sd-line); border-radius: 8px; padding: 1em 1.2em; margin: 1em 0; background: rgba(128,128,128,.05); }
+        #seerrDiscoverConfigPage .sd-card h4 { margin: 0 0 .6em; font-size: 1.05em; }
+        #seerrDiscoverConfigPage table.sd-table { width: 100%; border-collapse: collapse; font-size: .95em; }
+        #seerrDiscoverConfigPage table.sd-table th, #seerrDiscoverConfigPage table.sd-table td { text-align: left; padding: .5em .5em; border-bottom: 1px solid var(--sd-line); vertical-align: middle; }
+        #seerrDiscoverConfigPage table.sd-table th { font-weight: 600; opacity: .8; }
+        #seerrDiscoverConfigPage .sd-src { font-size: .85em; opacity: .7; word-break: break-all; }
+        #seerrDiscoverConfigPage .sd-pill { display: inline-block; padding: .1em .55em; border-radius: 999px; font-size: .82em; background: rgba(128,128,128,.25); white-space: nowrap; }
+        #seerrDiscoverConfigPage .sd-pill.movie { background: rgba(82,181,75,.28); }
+        #seerrDiscoverConfigPage .sd-pill.tv { background: rgba(56,140,230,.3); }
+        #seerrDiscoverConfigPage .sd-pill.good { background: rgba(82,181,75,.3); }
+        #seerrDiscoverConfigPage .sd-pill.warn { background: rgba(224,160,48,.3); }
+        #seerrDiscoverConfigPage .sd-actions { white-space: nowrap; text-align: right; }
+        #seerrDiscoverConfigPage .sd-chips { display: flex; flex-wrap: wrap; gap: .35em; max-height: 15em; overflow: auto; padding: .4em; border: 1px solid var(--sd-line); border-radius: 6px; }
+        #seerrDiscoverConfigPage .sd-chip { display: inline-flex; align-items: center; gap: .35em; padding: .25em .6em; border-radius: 999px; border: 1px solid var(--sd-line); cursor: pointer; font-size: .9em; user-select: none; }
+        #seerrDiscoverConfigPage .sd-chip input { accent-color: var(--sd-accent); }
+        #seerrDiscoverConfigPage .sd-chip.on { background: rgba(82,181,75,.22); border-color: rgba(82,181,75,.6); }
+        #seerrDiscoverConfigPage .sd-chip.off.on { background: rgba(220,75,75,.2); border-color: rgba(220,75,75,.6); }
+        #seerrDiscoverConfigPage .sd-filter { margin-bottom: .4em; }
+        #seerrDiscoverConfigPage .sd-builder { border: 1px solid var(--sd-accent); border-radius: 8px; padding: 1em 1.2em; margin: 1em 0; }
+        #seerrDiscoverConfigPage .sd-builder h4 { margin: 0 0 .8em; }
+        #seerrDiscoverConfigPage .sd-link { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .85em; word-break: break-all; padding: .6em .8em; border-radius: 6px; background: rgba(0,0,0,.25); }
+        #seerrDiscoverConfigPage .sd-posters { display: grid; grid-template-columns: repeat(auto-fill, minmax(6.5em, 1fr)); gap: .6em; margin-top: .8em; }
+        #seerrDiscoverConfigPage .sd-poster { font-size: .8em; line-height: 1.25; }
+        #seerrDiscoverConfigPage .sd-poster .img { aspect-ratio: 2/3; border-radius: 6px; background: var(--sd-soft) center/cover no-repeat; margin-bottom: .3em; position: relative; }
+        #seerrDiscoverConfigPage .sd-poster.hidden .img { opacity: .35; }
+        #seerrDiscoverConfigPage .sd-poster .tag { position: absolute; left: .3em; top: .3em; font-size: .85em; padding: .05em .45em; border-radius: 999px; background: rgba(0,0,0,.7); color: #fff; }
+        #seerrDiscoverConfigPage code { font-size: .92em; padding: .05em .3em; border-radius: 4px; background: rgba(0,0,0,.25); }
+        #seerrDiscoverConfigPage table.sd-ref td:first-child { white-space: nowrap; }
+        #seerrDiscoverConfigPage .sd-muted { opacity: .65; }
+        #seerrDiscoverConfigPage .sd-listcard h4 { display: flex; align-items: center; gap: .5em; }
+        #seerrDiscoverConfigPage .sd-listcard table.sd-table { table-layout: fixed; }
+        #seerrDiscoverConfigPage .sd-listcard th:nth-child(3) { width: 30%; }
+        #seerrDiscoverConfigPage .sd-listcard th:nth-child(5) { width: 15em; }
+        @media (max-width: 640px) { #seerrDiscoverConfigPage .sd-listcard th:nth-child(3) { width: auto; } }
+        #seerrDiscoverConfigPage .sd-listcard h4 .sd-pill { font-size: .95em; padding: .2em .7em; }
+        #seerrDiscoverConfigPage .sd-poster .tag.tr { left: auto; right: .3em; top: auto; bottom: .3em; }
+        #seerrDiscoverConfigPage .sd-poster .why { opacity: .7; font-size: .9em; margin-top: .15em; }
+        @media (max-width: 640px) { #seerrDiscoverConfigPage .sd-hide-sm { display: none; } }
+      </style>
+
+      <div class="sd-head">
+        <h2 class="sectionTitle">Discover</h2>
+        <div class="sd-headbtns">
+          <span id="sdSaveStatusTop" class="sd-muted" role="status"></span>
+          <button type="button" class="sd-btn sd-primary" id="sdSaveTop">Save</button>
+          <button type="button" class="sd-btn" id="sdRefresh" title="Runs Emby's Refresh Internet Channels task now, with fresh data from Seerr and TMDB">⟳ Refresh channels</button>
+          <a class="sd-btn" id="sdOpenSeerr" href="#" target="_blank" rel="noopener">Open Seerr ↗</a>
+        </div>
+      </div>
+      <div class="sd-status" id="sdRefreshStatus" role="status"></div>
+      <p class="sd-lead">
+        Adds two native channels — <strong>Discover Movies</strong> and <strong>Discover Shows</strong> — to every Emby app. They show lists from
+        Seerr and TMDB, hide what you already have, mark requested titles, play trailers, and (optionally) let people request a title by adding it to
+        their Favourites. Requests always go through Seerr as the person's own Seerr account.
+      </p>
+
+      <div class="sd-tabs" role="tablist">
+        <button type="button" class="sd-tab" role="tab" data-tab="connection">Connection</button>
+        <button type="button" class="sd-tab" role="tab" data-tab="users">Users</button>
+        <button type="button" class="sd-tab" role="tab" data-tab="lists">Channels &amp; Lists</button>
+        <button type="button" class="sd-tab" role="tab" data-tab="files">File Management</button>
+        <button type="button" class="sd-tab" role="tab" data-tab="display">Display</button>
+        <button type="button" class="sd-tab" role="tab" data-tab="help">Help</button>
+      </div>
+
+      <form id="sdForm" autocomplete="off">
+
+        <!-- ============================== CONNECTION ============================== -->
+        <section class="sd-panel" data-panel="connection">
+          <h3>Seerr</h3>
+          <div class="sd-field">
+            <label for="sdSeerrUrl">Seerr address used by Emby</label>
+            <input type="text" id="sdSeerrUrl" placeholder="http://seerr:5055" />
+            <div class="sd-help">How the Emby <em>server</em> reaches Seerr. In Docker use the service name on the shared network, e.g. <code>http://seerr:5055</code>. No port needs to be published for this.</div>
+          </div>
+          <div class="sd-field">
+            <label for="sdApiKey">Seerr API key</label>
+            <input type="password" id="sdApiKey" autocomplete="new-password" spellcheck="false" />
+            <div class="sd-help">Seerr → Settings → General → API Key. Kept in Emby's plugin settings (visible to Emby administrators only) and never sent to apps or browsers.</div>
+          </div>
+          <div class="sd-field">
+            <label for="sdSeerrPublicUrl">Seerr address in your browser</label>
+            <input type="text" id="sdSeerrPublicUrl" placeholder="http://your-server-ip:5055" />
+            <div class="sd-help">Used only by the <strong>Open Seerr</strong> button above, e.g. <code>http://&lt;server-ip&gt;:5055</code> or your Seerr domain. Leave blank to use this server's address on port 5055.</div>
+          </div>
+          <div class="sd-buttons">
+            <button type="button" class="sd-btn" id="sdTestSeerr">Test Seerr connection</button>
+            <span class="sd-muted">Checks the address and API key above (no need to save first). Takes a second.</span>
+          </div>
+          <div class="sd-status" id="sdTestSeerrResult" role="status"></div>
+
+          <h3>TMDB</h3>
+          <div class="sd-field">
+            <label for="sdTmdbKey">TMDB API key or API Read Access Token</label>
+            <input type="password" id="sdTmdbKey" autocomplete="new-password" spellcheck="false" />
+            <div class="sd-help">Needed for TMDB lists, the list builder (genres, streaming services, age ratings), show age-rating filters and season trailers. Free: themoviedb.org → Settings → API. Either the short <em>API Key</em> or the long <em>API Read Access Token</em> works. Only sent to api.themoviedb.org.</div>
+          </div>
+          <div class="sd-buttons">
+            <button type="button" class="sd-btn" id="sdTestTmdb">Test TMDB connection</button>
+            <span class="sd-muted">Checks only the key above. To check a list, use <em>Preview</em> on the Channels &amp; Lists tab.</span>
+          </div>
+          <div class="sd-status" id="sdTestTmdbResult" role="status"></div>
+
+          <h3>Advanced</h3>
+          <div class="sd-row">
+            <div class="sd-field">
+              <label for="sdTimeout">Timeout (seconds)</label>
+              <input type="number" id="sdTimeout" min="3" max="120" step="1" />
+              <div class="sd-help">How long to wait for Seerr or TMDB before giving up.</div>
+            </div>
+            <div class="sd-field">
+              <label for="sdCache">Cache (minutes)</label>
+              <input type="number" id="sdCache" min="0" max="240" step="1" />
+              <div class="sd-help">How long Seerr results are reused. TMDB lists are kept at least 30 minutes.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================== USERS ============================== -->
+        <section class="sd-panel" data-panel="users">
+          <h3>Who can request</h3>
+          <p class="sd-help">
+            Requests are sent to Seerr <em>as the person who made them</em>, so their Seerr permissions, request limits and auto-approval apply,
+            and the request appears under their name in Seerr. Each Emby user is matched automatically to the Seerr account that belongs to
+            their Emby login — created when they sign in to Seerr with Emby, or by Seerr → Settings → Users → <em>Import Emby Users</em>.
+            People without a Seerr account can still browse and watch trailers, but cannot request.
+          </p>
+          <label class="sd-check"><input type="checkbox" id="sdAdminsOnly" /><span><strong>Only Emby administrators can request</strong><br><span class="sd-muted">Everyone else can browse and watch trailers only.</span></span></label>
+          <label class="sd-check"><input type="checkbox" id="sdUnlinkedAdmins" /><span><strong>Administrators without a Seerr account request as the Seerr owner</strong><br><span class="sd-muted">Their requests use the API-key owner (Seerr user 1), which skips approval and limits.</span></span></label>
+          <div class="sd-buttons"><button type="button" class="sd-btn" id="sdCheckUsers">Check user links</button>
+            <span class="sd-muted">Lists every Emby user and the Seerr account their requests use (uses the saved Seerr settings).</span></div>
+          <div id="sdUsers"></div>
+        </section>
+
+        <!-- ============================== CHANNELS & LISTS ============================== -->
+        <section class="sd-panel" data-panel="lists">
+          <h3>Channels</h3>
+          <div class="sd-row">
+            <div class="sd-field">
+              <label for="sdMoviesName">Movies channel name</label>
+              <input type="text" id="sdMoviesName" placeholder="Discover Movies" maxlength="60" />
+            </div>
+            <div class="sd-field">
+              <label for="sdTvName">Shows channel name</label>
+              <input type="text" id="sdTvName" placeholder="Discover Shows" maxlength="60" />
+            </div>
+          </div>
+          <p class="sd-help">Emby identifies a channel by its name: after renaming, restart Emby, then set channel access (Users → Access) and home-screen rows again for the renamed channel.</p>
+
+          <h3>Lists</h3>
+          <p class="sd-help">
+            Each list becomes a folder in its channel. Use ↑ ↓ to change the folder order, the tick box to hide a folder without deleting it,
+            and <em>Preview</em> to see what a list returns today. Titles inside a folder are ordered by Emby (usually alphabetically), so a
+            list's "pick titles by" setting decides <em>which</em> titles are included rather than their order on screen.
+          </p>
+
+          <div class="sd-card sd-listcard">
+            <h4><span class="sd-pill movie" id="sdMoviesTitle">Discover Movies</span> lists</h4>
+            <table class="sd-table" id="sdListTable-movie">
+              <thead><tr><th style="width:4.5em">Order</th><th style="width:3em">On</th><th>Folder</th><th class="sd-hide-sm">Source</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+            <div class="sd-buttons"><button type="button" class="sd-btn sd-primary" id="sdAddList-movie">+ Add a movie list</button></div>
+            <div id="sdBuilderHost-movie"></div>
+          </div>
+
+          <div class="sd-card sd-listcard">
+            <h4><span class="sd-pill tv" id="sdTvTitle">Discover Shows</span> lists</h4>
+            <table class="sd-table" id="sdListTable-tv">
+              <thead><tr><th style="width:4.5em">Order</th><th style="width:3em">On</th><th>Folder</th><th class="sd-hide-sm">Source</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+            <div class="sd-buttons"><button type="button" class="sd-btn sd-primary" id="sdAddList-tv">+ Add a show list</button></div>
+            <div id="sdBuilderHost-tv"></div>
+          </div>
+
+          <div class="sd-buttons">
+            <button type="button" class="sd-btn" id="sdRestoreDefaults">Restore the default Seerr lists</button>
+            <span class="sd-muted">Adds back Trending, Popular and Upcoming from Seerr to both channels if you removed them.</span>
+          </div>
+
+          <h3>List sizes</h3>
+          <div class="sd-row">
+            <div class="sd-field">
+              <label for="sdMaxItems">Titles per Seerr list</label>
+              <input type="number" id="sdMaxItems" min="20" max="400" step="20" />
+              <div class="sd-help">Default for Trending / Popular / Upcoming from Seerr (20 per page).</div>
+            </div>
+            <div class="sd-field">
+              <label for="sdMaxList">Titles per TMDB list</label>
+              <input type="number" id="sdMaxList" min="20" max="1000" step="20" />
+              <div class="sd-help">Default for TMDB lists and links. A list can override this in its own settings.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================== FILE MANAGEMENT ============================== -->
+        <section class="sd-panel" data-panel="files">
+          <h3>Where requested titles are stored</h3>
+          <p class="sd-help">
+            Two destinations — for example a streaming/cloud service and your own storage. For each, pick the Radarr and Sonarr root folder
+            and tags that Seerr should send with the request. The folder and tag lists come from Seerr's Radarr and Sonarr servers; choose
+            <em>Seerr's default</em> to leave that part to Seerr. Requests made from Emby use the <strong>default destination</strong>.
+            Requests made in Seerr itself use Seerr's own settings.
+          </p>
+          <div class="sd-buttons">
+            <button type="button" class="sd-btn" id="sdLoadServices">Reload folders &amp; tags from Seerr</button>
+            <span class="sd-muted" id="sdServicesInfo"></span>
+          </div>
+          <div id="sdDestinations"></div>
+          <p class="sd-help">
+            Tags replace the default tags Seerr would otherwise add for that request. Seerr <em>override rules</em> (Seerr → Settings) can still
+            change the folder or tags. After changing this, request one title and check where it lands in Radarr/Sonarr.
+          </p>
+
+          <h3>Request from the Emby apps (Favourites)</h3>
+          <label class="sd-check"><input type="checkbox" id="sdFavorites" /><span><strong>Adding a Discover title to Favourites (♥) requests it</strong><br>
+            <span class="sd-muted">Works in every Emby app (TV, phone, web). Emby's apps cannot show a custom Request button, so the ♥ is used instead. Browsing or opening a title never requests it. The person gets an on-screen message with Seerr's answer.</span></span></label>
+          <div class="sd-indent">
+            <label class="sd-check"><input type="checkbox" id="sdUnfavorite" /><span>Remove the ♥ again once Seerr has the request <span class="sd-muted">(the poster then shows REQUESTED)</span></span></label>
+            <div class="sd-field" style="max-width:24em">
+              <label for="sdFavSeasons">For a show, request</label>
+              <select id="sdFavSeasons">
+                <option value="all">All missing seasons</option>
+                <option value="first">The first missing season</option>
+                <option value="latest">The latest missing season</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================== DISPLAY ============================== -->
+        <section class="sd-panel" data-panel="display">
+          <h3>What is shown</h3>
+          <label class="sd-check"><input type="checkbox" id="sdHideOwned" /><span><strong>Hide titles I already have</strong><br><span class="sd-muted">Available in Seerr or found in the Emby library. Shows you only partly have stay visible so the missing seasons can be requested.</span></span></label>
+          <label class="sd-check"><input type="checkbox" id="sdCheckLibrary" /><span><strong>Also check the Emby library</strong><br><span class="sd-muted">Matches titles by TMDB id, which catches things Seerr has not synced yet. Only real libraries count — never channel items, including the Discover channels themselves.</span></span></label>
+          <div class="sd-indent">
+            <div class="sd-field">
+              <span class="sd-label">Libraries that count as "I already have it"</span>
+              <div id="sdLibraries"><span class="sd-muted">Loading libraries…</span></div>
+              <div class="sd-help">Tick the libraries to check, or none to check all movie and TV libraries. To see why a title counts as owned, use <em>Preview</em> on its list (Channels &amp; Lists) and hover over the <em>owned</em> poster.</div>
+            </div>
+          </div>
+          <label class="sd-check"><input type="checkbox" id="sdTvAsSeries" /><span><strong>Show TV shows as series folders</strong><br><span class="sd-muted">Off (recommended): a show is one item and Play on its poster plays its trailer, like a movie. On: each show opens like a series with a <em>Trailer</em> item inside — but Play on the poster finds nothing until the show has been opened once, because Emby only reads a folder's contents when it is opened.</span></span></label>
+
+          <h3>Title details</h3>
+          <label class="sd-check"><input type="checkbox" id="sdTitleDetails" /><span><strong>Add scores, cast and crew</strong><br>
+            <span class="sd-muted">The star shows the IMDb score, and the line above the description shows IMDb, Rotten Tomatoes (critics) and audience scores. The page lists cast, director and writers (each person is clickable), genres, studio or network, runtime and age rating, with IMDb and TMDB links. Seerr has Rotten Tomatoes scores for movies and shows, but IMDb scores only for movies — shows use the TMDB score for the star. The first refresh takes longer while details are looked up; after that they are reused for a week.</span></span></label>
+          <div class="sd-indent">
+            <div class="sd-field" style="max-width:18em">
+              <label for="sdAgeCountry">Age rating from</label>
+              <input type="text" id="sdAgeCountry" maxlength="2" placeholder="US" style="text-transform:uppercase" />
+              <div class="sd-help">Two-letter country code, e.g. <code>US</code>, <code>GB</code>, <code>ZA</code>.</div>
+            </div>
+          </div>
+
+          <h3>Poster badges</h3>
+          <label class="sd-check"><input type="checkbox" id="sdBadgeRequested" /><span>Amber <strong>REQUESTED</strong> badge on requested titles</span></label>
+          <label class="sd-check"><input type="checkbox" id="sdBadgePartial" /><span>Green <strong>PARTIAL</strong> badge on shows you only partly have</span></label>
+          <label class="sd-check"><input type="checkbox" id="sdBadgeTrailer" /><span>Dark <strong>▶ TRAILER</strong> badge (bottom left) on titles that have a trailer<br>
+            <span class="sd-muted">For shows, the show's own trailer or any season's trailer counts (season trailers need the TMDB key). Needs "Play plays the trailer" below. The first channel refresh after turning this on (and after an Emby restart) takes longer while trailers are looked up; after that the answers are reused for a week (a day for titles without a trailer).</span></span></label>
+
+          <h3>Playback</h3>
+          <label class="sd-check"><input type="checkbox" id="sdPlayTrailers" /><span><strong>Play plays the trailer</strong><br><span class="sd-muted">The YouTube trailer from TMDB. Plays in Emby's web player and apps built on it; apps without a YouTube player show "no compatible streams".</span></span></label>
+        </section>
+
+        <!-- ============================== HELP ============================== -->
+        <section class="sd-panel" data-panel="help">
+          <h3>How it works</h3>
+          <ul class="sd-help" style="opacity:.85">
+            <li>The channels refresh by themselves after you save and about 20 seconds after a request. To refresh by hand, use <strong>⟳ Refresh channels</strong> at the top of this page (the same as Dashboard → Scheduled Tasks → <em>Refresh Internet Channels</em>, but with fresh data from Seerr and TMDB).</li>
+            <li>Each title's first line (✔ / ➕ / ⏳ and what ♥ does) is shown as the tagline, on its own line above the description.</li>
+            <li>Give people access to the channels in Users → (user) → Access, and add folders to their home screen in Settings → Home screen.</li>
+            <li>♥ = request (when enabled on File Management). ▶ Play = trailer. Everything else (approvals, request history, issues) is in Seerr.</li>
+            <li>The Discover channels appear with a folder icon in the Emby web app's side menu. Emby chooses that icon for every channel, and a plugin cannot change it. The channel artwork shows on the home screen and under My Media.</li>
+          </ul>
+
+          <h3>Date placeholders</h3>
+          <p class="sd-help">TMDB links can contain placeholders that are filled in from the Emby server's clock every time the list is read, so date windows move forward by themselves. The list builder adds them for you; you only need these for your own links.</p>
+          <table class="sd-table sd-ref">
+            <tr><td><code>{today}</code></td><td>Today's date, e.g. 2026-10-27</td></tr>
+            <tr><td><code>{today-7d}</code> <code>{today+30d}</code></td><td>Today minus / plus days (<code>d</code>), weeks (<code>w</code>), months (<code>m</code>) or years (<code>y</code>), e.g. <code>{today-1m}</code></td></tr>
+            <tr><td><code>{start_of_week}</code> <code>{end_of_week}</code></td><td>Monday and Sunday of this week</td></tr>
+            <tr><td><code>{start_of_month}</code> <code>{end_of_month}</code></td><td>First and last day of this month (also with offsets, e.g. <code>{start_of_month-1m}</code> = first day of last month)</td></tr>
+            <tr><td><code>{start_of_year}</code> <code>{end_of_year}</code></td><td>1 January and 31 December</td></tr>
+            <tr><td><code>{year}</code> <code>{year-1}</code></td><td>The year as a number, for filters such as <code>primary_release_year</code></td></tr>
+          </table>
+          <p class="sd-help">"Today" is the Emby container's local time. Set <code>TZ=</code> to your time zone (e.g. <code>TZ=Europe/London</code>) in the container's environment so the day changes at your midnight.</p>
+
+          <h3>Writing your own TMDB link</h3>
+          <p class="sd-help">Choose <em>Custom TMDB link</em> in the list builder and paste any <code>https://api.themoviedb.org/3/…</code> link that returns titles (<code>/discover/movie</code>, <code>/discover/tv</code>, <code>/trending/…</code>, <code>/movie/top_rated</code>, <code>/tv/popular</code> …). <code>api_key</code> and <code>page</code> in the link are ignored. Useful filters:</p>
+          <table class="sd-table sd-ref">
+            <tr><td><code>sort_by=popularity.desc</code></td><td>Also <code>vote_average.desc</code>, <code>vote_count.desc</code>, <code>primary_release_date.desc</code> (movies), <code>first_air_date.desc</code> (shows)</td></tr>
+            <tr><td><code>primary_release_date.gte</code> / <code>.lte</code></td><td>Movie release window, e.g. <code>={today-1m}</code></td></tr>
+            <tr><td><code>first_air_date.gte</code> / <code>.lte</code></td><td>Shows that premiered in a window</td></tr>
+            <tr><td><code>air_date.gte</code> / <code>.lte</code></td><td>Shows with an episode airing in a window ("on air")</td></tr>
+            <tr><td><code>with_watch_providers=8|1899</code></td><td>Streaming services (<code>|</code> = any of). Needs <code>watch_region=US</code>; add <code>with_watch_monetization_types=flatrate</code> for subscription only</td></tr>
+            <tr><td><code>with_genres=18|80</code> / <code>without_genres=10762,10766</code></td><td>Include any of / exclude genres (ids are listed in the builder)</td></tr>
+            <tr><td><code>without_keywords=210024</code></td><td>Exclude anime</td></tr>
+            <tr><td><code>with_original_language=en</code></td><td>Original language</td></tr>
+            <tr><td><code>vote_count.gte=200</code></td><td>Skip titles with few votes</td></tr>
+            <tr><td><code>vote_average.gte=7</code></td><td>Minimum TMDB score out of 10</td></tr>
+            <tr><td><code>certification_country=US</code><br><code>certification.gte=PG</code> / <code>.lte=PG-13</code></td><td>Age ratings from lowest to highest allowed, in that country's system (US movies: G, PG, PG-13, R, NC-17; US shows: TV-Y, TV-Y7, TV-G, TV-PG, TV-14, TV-MA). TMDB applies this to movies itself. For shows TMDB has no such filter, so Discover checks each show's rating; add <code>include_unrated=true</code> to keep shows with no rating in that country.</td></tr>
+          </table>
+
+          <h3>Troubleshooting</h3>
+          <table class="sd-table">
+            <tr><td>A channel or folder is empty</td><td>Run <em>Test Seerr connection</em> / <em>Test TMDB connection</em> (Connection tab) and <em>Preview</em> on the list. Then Dashboard → Logs → <code>embyserver.txt</code>, search for <code>Discover</code>.</td></tr>
+            <tr><td>A title is hidden as "already owned" but you don't have it</td><td><em>Preview</em> the list and hover over the <em>owned</em> poster: it names the Emby library item that matched (often a file identified as the wrong film — fix it with <em>Identify</em> in Emby) or says Seerr marks it as available (check the title in Seerr).</td></tr>
+            <tr><td>A show list with an age-rating filter is short or empty</td><td>Many shows have no rating in some countries. Choose a different country, or tick <em>Keep shows without a rating</em>.</td></tr>
+            <tr><td>A TMDB list is empty</td><td>Use <em>Preview</em> on the list: it shows TMDB's error (bad key, private list, unknown filter). Owned titles are hidden.</td></tr>
+            <tr><td>♥ does nothing</td><td>Favourite-to-request must be on (File Management) and the person must have a Seerr link (Users → Check user links).</td></tr>
+            <tr><td>Request went to the wrong folder</td><td>Check File Management and any Seerr override rules.</td></tr>
+            <tr><td>No badges</td><td>Badges appear after the channel refreshes; look for <code>could not draw poster badge</code> in the log.</td></tr>
+          </table>
+        </section>
+
+        <div class="sd-savebar">
+          <button type="submit" class="sd-btn sd-primary" id="sdSave">Save</button>
+          <span id="sdSaveStatus" class="sd-muted" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
