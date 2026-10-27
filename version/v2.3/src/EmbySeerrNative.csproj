@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Discover (Seerr + TMDB lists) for Emby Server 4.10.x
+
+    Default build (GitHub Codespaces):   dotnet build -c Release
+      -> references the Emby SDK from NuGet (MediaBrowser.Server.Core).
+
+    Alternative: compile against the DLLs of the exact Emby server you run (copy the
+    'system' folder out of the container, e.g. docker cp emby:/app/emby/system ./emby-system):
+      dotnet build -c Release -p:EmbySystemDir=/path/to/emby-system
+
+    The plugin has NO third-party runtime dependencies: only EmbySeerrNative.dll is installed.
+  -->
+
+  <PropertyGroup>
+    <EmbyTargetFramework Condition="'$(EmbyTargetFramework)' == ''">netstandard2.0</EmbyTargetFramework>
+    <TargetFramework>$(EmbyTargetFramework)</TargetFramework>
+    <AssemblyName>EmbySeerrNative</AssemblyName>
+    <RootNamespace>EmbySeerrNative</RootNamespace>
+    <Version>2.3.0</Version>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
+    <Product>Discover for Emby</Product>
+    <LangVersion>latest</LangVersion>
+    <!-- No debug symbols in release builds, and no build-machine paths inside the DLL. -->
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=/src</PathMap>
+    <Nullable>disable</Nullable>
+    <Deterministic>true</Deterministic>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EmbySdkVersion Condition="'$(EmbySdkVersion)' == ''">4.10.0.24-beta2</EmbySdkVersion>
+  </PropertyGroup>
+
+  <!-- Option A (default): Emby SDK reference assemblies from NuGet. Not copied to output. -->
+  <ItemGroup Condition="'$(EmbySystemDir)' == ''">
+    <PackageReference Include="MediaBrowser.Server.Core" Version="$(EmbySdkVersion)" PrivateAssets="all" ExcludeAssets="runtime" />
+    <!-- Emby 4.10.2.0 ships SkiaSharp 2.88.x (managed 2.88.0.0, native 88.9); compile only, never copied. -->
+    <PackageReference Include="SkiaSharp" Version="2.88.9" PrivateAssets="all" IncludeAssets="compile" />
+  </ItemGroup>
+
+  <!-- Option B: the real server assemblies. Not copied to output. -->
+  <ItemGroup Condition="'$(EmbySystemDir)' != ''">
+    <Reference Include="MediaBrowser.Common"><HintPath>$(EmbySystemDir)/MediaBrowser.Common.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="MediaBrowser.Controller"><HintPath>$(EmbySystemDir)/MediaBrowser.Controller.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="MediaBrowser.Model"><HintPath>$(EmbySystemDir)/MediaBrowser.Model.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SkiaSharp"><HintPath>$(EmbySystemDir)/SkiaSharp.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration/config.html" />
+    <EmbeddedResource Include="Configuration/config.js" />
+    <EmbeddedResource Include="Images/*.png" />
+    <EmbeddedResource Include="Fonts/badge-font.otf" />
+  </ItemGroup>
+
+</Project>
